@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "title": "Neon Dreams",
+        "category": "Logo Design",
+        "image": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=800&q=80",
+        "description": "A cyberpunk-inspired branding package for a nightlife event."
+    },
+    {
+        "id": 2,
+        "title": "EcoTech Identity",
+        "category": "Brand Identity",
+        "image": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80",
+        "description": "Complete brand identity for a sustainable technology company."
+    },
+    {
+        "id": 3,
+        "title": "Urban Flow Poster",
+        "category": "Poster Design",
+        "image": "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800&q=80",
+        "description": "Event poster series capturing the rhythm of the city."
+    },
+    {
+        "id": 4,
+        "title": "Minimalist Cards",
+        "category": "Business Cards",
+        "image": "https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=800&q=80",
+        "description": "Elegant and minimalist business card design."
+    }
+]

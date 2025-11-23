@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "John Brandews",
+        "role": "Founder & Creative Director",
+        "image": "/bendyimage.jpeg"
+    },
+    {
+        "id": 2,
+        "name": "Eddy Max",
+        "role": "Developer",
+        "image": "/eddypic.jpeg"
+    },
+    {
+        "id": 3,
+        "name": "Stanley Ngure",
+        "role": "Graphic Designer",
+        "image": "/stanleypic.jpeg"
+    },
+    {
+        "id": 4,
+        "name": "Berrin Shiyayo",
+        "role": "Marketing Strategist",
+        "image": "/berrinpic.png"
+    }
+]

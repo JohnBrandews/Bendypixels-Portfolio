@@ -1,0 +1,63 @@
+{
+    "websites": [
+        {
+            "id": "starter",
+            "title": "Starter",
+            "price": "20,000",
+            "features": [
+                "1-5 Pages",
+                "Mobile friendly",
+                "Google analytics",
+                "SEO Management",
+                "Basic SEO",
+                "2 Weeks delivery"
+            ]
+        },
+        {
+            "id": "standard",
+            "title": "Standard Plan",
+            "price": "30,000",
+            "features": [
+                "5 - 10 Pages",
+                "Mobile friendly",
+                "3rd party integration",
+                "Basic SEO & Product SEO",
+                "Google analytics",
+                "1 Month support",
+                "2 weeks delivery",
+                "Full brand identity(logo, poster)"
+            ]
+        },
+        {
+            "id": "ecommerce",
+            "title": "E-commerce",
+            "price": "50,000",
+            "features": [
+                "5 - 10 Pages",
+                "Mobile friendly",
+                "Mpesa & card integration",
+                "Basic SEO & Product SEO",
+                "Google analytics",
+                "2 Month support",
+                "4 weeks delivery",
+                "Full brand identity(logo, poster)"
+            ]
+        }
+    ],
+    "writing": [
+        {
+            "id": "cv",
+            "title": "Resume/CV Writing",
+            "price": "100",
+            "unit": "per page",
+            "description": "Professional CV writing service to help you land your dream job."
+        },
+        {
+            "id": "kra",
+            "title": "KRA Fill Return",
+            "price": "200",
+            "unit": "flat rate",
+            "description": "Hassle-free KRA tax return filing services."
+        }
+    ]
+}
