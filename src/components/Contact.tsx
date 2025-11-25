@@ -30,15 +30,16 @@ const Contact: React.FC = () => {
 
       const data = await response.json();
 
-      if (data.success) {
+      if (response.ok && data.success) {
         setStatus('success');
         setFormData({ name: '', email: '', message: '' });
         setTimeout(() => setStatus('idle'), 5000);
       } else {
+        console.error('Server responded with error:', data);
         setStatus('error');
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Network or parsing error:', error);
       setStatus('error');
     }
   };
