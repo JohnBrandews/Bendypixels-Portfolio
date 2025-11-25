@@ -1,14 +1,31 @@
-import { Resend } from 'resend';
+const { Resend } = require('resend');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-export const handler = async (event, context) => {
+exports.handler = async (event, context) => {
+    // Only allow POST
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
 
     try {
+        // Check for API key inside the handler to prevent top-level crashes
+        if (!process.env.RESEND_API_KEY) {
+            console.error('Missing RESEND_API_KEY environment variable');
+            return {
+                statusCode: 500,
+                body: JSON.stringify({ success: false, error: 'Server configuration error: Missing API Key' }),
+            };
+        }
+
+        const resend = new Resend(process.env.RESEND_API_KEY);
         const { name, email, message } = JSON.parse(event.body);
+
+        // Basic validation
+        if (!name || !email || !message) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ success: false, error: 'Missing required fields' }),
+            };
+        }
 
         await resend.emails.send({
             from: 'Contact Form <no-reply@bendypixels.co>',
@@ -30,8 +47,6 @@ export const handler = async (event, context) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Content-Type',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS',
             },
             body: JSON.stringify({ success: true, message: 'Email sent!' }),
         };
@@ -43,7 +58,7 @@ export const handler = async (event, context) => {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
             },
-            body: JSON.stringify({ success: false, error: 'Failed to send email' }),
+            body: JSON.stringify({ success: false, error: 'Failed to send email: ' + error.message }),
         };
     }
 };
