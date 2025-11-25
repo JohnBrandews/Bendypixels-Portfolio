@@ -2,31 +2,31 @@
 import testimonialsData from '../data/testimonials.json';
 
 const Testimonials: React.FC = () => {
-    return (
-        <section className="section bg-surface">
-            <div className="container">
-                <h2 className="section-title text-center mb-lg">Client Stories</h2>
-                <div className="testimonials-grid">
-                    {testimonialsData.map((item) => (
-                        <div key={item.id} className="testimonial-card">
-                            <p className="testimonial-text">"{item.text}"</p>
-                            <div className="testimonial-author">
-                                <div className="author-info">
-                                    <h4>{item.name}</h4>
-                                    <p>{item.role}</p>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+  return (
+    <section className="section bg-surface">
+      <div className="container">
+        <h2 className="section-title text-center mb-lg">Client Stories</h2>
+        <div className="testimonials-grid">
+          {testimonialsData.map((item) => (
+            <div key={item.id} className="testimonial-card">
+              <p className="testimonial-text">"{item.text}"</p>
+              <div className="testimonial-author">
+                <div className="author-info">
+                  <h4>{item.name}</h4>
+                  <p>{item.role}</p>
                 </div>
+              </div>
             </div>
-            <style>{`
+          ))}
+        </div>
+      </div>
+      <style>{`
         .bg-surface {
           background-color: var(--color-surface);
         }
         .testimonials-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
           gap: 2rem;
         }
         .testimonial-card {
@@ -55,8 +55,8 @@ const Testimonials: React.FC = () => {
           color: rgba(255, 255, 255, 0.6);
         }
       `}</style>
-        </section>
-    );
+    </section>
+  );
 };
 
 export default Testimonials;

@@ -2,25 +2,25 @@ import React from 'react';
 import teamData from '../data/team.json';
 
 const Team: React.FC = () => {
-    return (
-        <section id="team" className="section bg-surface">
-            <div className="container">
-                <h2 className="section-title text-center mb-lg">Meet The Team</h2>
-                <div className="team-grid">
-                    {teamData.map((member) => (
-                        <div key={member.id} className="team-card">
-                            <div className="team-image">
-                                <img src={member.image} alt={member.name} />
-                            </div>
-                            <div className="team-info">
-                                <h3>{member.name}</h3>
-                                <p>{member.role}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+  return (
+    <section id="team" className="section bg-surface">
+      <div className="container">
+        <h2 className="section-title text-center mb-lg">Meet The Team</h2>
+        <div className="team-grid">
+          {teamData.map((member) => (
+            <div key={member.id} className="team-card">
+              <div className="team-image">
+                <img src={member.image} alt={member.name} />
+              </div>
+              <div className="team-info">
+                <h3>{member.name}</h3>
+                <p>{member.role}</p>
+              </div>
             </div>
-            <style>{`
+          ))}
+        </div>
+      </div>
+      <style>{`
         .bg-surface {
           background-color: var(--color-surface);
         }
@@ -50,6 +50,7 @@ const Team: React.FC = () => {
           width: 100%;
           height: 100%;
           object-fit: cover;
+          object-position: top center;
           border-radius: 50%;
         }
         .team-info h3 {
@@ -63,8 +64,8 @@ const Team: React.FC = () => {
           letter-spacing: 0.05em;
         }
       `}</style>
-        </section>
-    );
+    </section>
+  );
 };
 
 export default Team;
