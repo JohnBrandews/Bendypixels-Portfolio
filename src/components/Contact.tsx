@@ -7,6 +7,7 @@ const Contact: React.FC = () => {
     message: ''
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
@@ -18,6 +19,7 @@ const Contact: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
+    setErrorMessage('');
 
     try {
       const response = await fetch('/.netlify/functions/send-email', {
@@ -36,10 +38,12 @@ const Contact: React.FC = () => {
         setTimeout(() => setStatus('idle'), 5000);
       } else {
         console.error('Server responded with error:', data);
+        setErrorMessage(data.error || 'Failed to send message.');
         setStatus('error');
       }
     } catch (error) {
       console.error('Network or parsing error:', error);
+      setErrorMessage('Network error. Please try again.');
       setStatus('error');
     }
   };
@@ -113,7 +117,7 @@ const Contact: React.FC = () => {
             <p className="success-msg">Message sent successfully! We will get back to you shortly.</p>
           )}
           {status === 'error' && (
-            <p className="error-msg">Failed to send message. Please try again.</p>
+            <p className="error-msg">{errorMessage || 'Failed to send message. Please try again.'}</p>
           )}
         </form>
       </div>
