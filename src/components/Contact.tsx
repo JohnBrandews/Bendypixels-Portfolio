@@ -20,7 +20,7 @@ const Contact: React.FC = () => {
     setStatus('sending');
 
     try {
-      const response = await fetch('http://localhost:3000/api/send', {
+      const response = await fetch('/.netlify/functions/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
