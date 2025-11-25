@@ -185,6 +185,12 @@ const Contact: React.FC = () => {
             grid-template-columns: 1fr;
             gap: 3rem;
           }
+          .contact-form {
+            padding: 1.5rem;
+          }
+          .section-title {
+            font-size: 2rem;
+          }
         }
       `}</style>
     </section>

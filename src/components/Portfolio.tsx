@@ -34,12 +34,16 @@ const Portfolio: React.FC = () => {
           mainImage
         }`)
         .then((data) => {
-          console.log('Sanity Data:', data);
+          console.log('Sanity Data Fetched:', data);
+          if (!data || data.length === 0) {
+            console.warn('Sanity returned no projects. Check your dataset and CORS settings.');
+          }
           setProjects(data);
           setLoading(false);
         })
         .catch((err) => {
-          console.error('Sanity Error:', err);
+          console.error('Sanity Fetch Error:', err);
+          console.error('Make sure https://bendypixels.netlify.app is added to your Sanity CORS origins.');
           setLoading(false);
         });
     }
@@ -209,7 +213,7 @@ const Portfolio: React.FC = () => {
                     <div key={item._id} className="portfolio-item">
                       <div className="portfolio-image">
                         <img
-                          src={item.mainImage ? urlFor(item.mainImage).width(800).height(600).url() : ''}
+                          src={item.mainImage ? urlFor(item.mainImage).width(800).height(600).url() : 'https://via.placeholder.com/800x600?text=No+Image'}
                           alt={item.title}
                         />
                         <div className="portfolio-overlay">

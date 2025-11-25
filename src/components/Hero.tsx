@@ -52,6 +52,24 @@ const Hero: React.FC = () => {
           gap: 1rem;
           justify-content: center;
         }
+        
+        @media (max-width: 768px) {
+          .hero-title {
+            font-size: 3rem;
+          }
+          .hero-subtitle {
+            font-size: 1.1rem;
+            padding: 0 1rem;
+          }
+          .hero-actions {
+            flex-direction: column;
+            padding: 0 2rem;
+          }
+          .hero-actions .btn {
+            width: 100%;
+            text-align: center;
+          }
+        }
       `}</style>
     </section>
   );
