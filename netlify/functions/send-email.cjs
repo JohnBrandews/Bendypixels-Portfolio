@@ -28,7 +28,7 @@ exports.handler = async (event, context) => {
         }
 
         await resend.emails.send({
-            from: 'Contact Form <no-reply@bendypixels.co>',
+            from: 'onboarding@resend.dev',
             to: ['johnbrandews@gmail.com'],
             replyTo: email,
             subject: `New Inquiry from ${name} - bendypixels.co`,
