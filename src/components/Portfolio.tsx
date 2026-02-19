@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import AOS from 'aos';
 import pricingData from '../data/pricing.json';
 import { client, urlFor } from '../lib/sanity';
+import GlassIcons from './GlassIcons';
 
 interface Project {
   _id: string;
@@ -22,6 +25,21 @@ const Portfolio: React.FC = () => {
   const getWhatsappLink = (message: string) => {
     return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
   };
+
+  // Re-run AOS when tab changes so new content (branding grid, writing cards) is discovered and animates
+  useEffect(() => {
+    const t = setTimeout(() => AOS.refresh(), 50);
+    return () => clearTimeout(t);
+  }, [activeTab]);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (selectedImage) {
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = prevOverflow; };
+    }
+  }, [selectedImage]);
 
   // Fetch projects from Sanity when Branding tab is opened
   useEffect(() => {
@@ -67,32 +85,20 @@ const Portfolio: React.FC = () => {
   });
 
   return (
-    <section id="portfolio" className="section">
+    <section id="portfolio" className="section" data-aos="fade-up">
       <div className="container">
-        <h2 className="section-title text-center mb-md">Our Services & Work</h2>
+        <h2 className="section-title text-center mb-md" data-aos="fade-up" data-aos-delay="100">Our Services & Work</h2>
 
-        <div className="tabs">
-          <button
-            className={`tab-btn ${activeTab === 'websites' ? 'active' : ''}`}
-            onClick={() => setActiveTab('websites')}
-          >
-            Websites
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'branding' ? 'active' : ''}`}
-            onClick={() => {
-              setActiveTab('branding');
-              if (projects.length === 0) setLoading(true);
+        <div data-aos="fade-up" data-aos-delay="150" style={{ marginBottom: '3rem' }}>
+          <GlassIcons
+            activeTab={activeTab}
+            onTabChange={(tab) => {
+              setActiveTab(tab);
+              if (tab === 'branding' && projects.length === 0) setLoading(true);
             }}
-          >
-            Branding
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'writing' ? 'active' : ''}`}
-            onClick={() => setActiveTab('writing')}
-          >
-            Writing
-          </button>
+            colorful={false}
+            className="portfolio-glass-icons"
+          />
         </div>
 
         <div className="tab-content">
@@ -100,8 +106,8 @@ const Portfolio: React.FC = () => {
           {activeTab === 'websites' && (
             <>
               <div className="pricing-grid">
-                {pricingData.websites.map((plan) => (
-                  <div key={plan.id} className="pricing-card">
+                {pricingData.websites.map((plan, i) => (
+                  <div key={plan.id} className="pricing-card" data-aos="fade-up" data-aos-delay={200 + i * 80}>
                     <h3 className="plan-title">{plan.title}</h3>
                     <p className="plan-price-label">Starts from KSH.</p>
                     <div className="plan-price">{plan.price}</div>
@@ -123,11 +129,11 @@ const Portfolio: React.FC = () => {
               </div>
 
               {/* Quotation Inclusives */}
-              <div className="quotation-section">
-                <h3 className="section-subtitle text-center">Quotation Inclusives</h3>
+              <div className="quotation-section" data-aos="fade-up" data-aos-delay="100">
+                <h3 className="section-subtitle text-center" data-aos="fade-up" data-aos-delay="150">Quotation Inclusives</h3>
                 <div className="quotation-grid">
                   {/* Hosting & Domain */}
-                  <div className="quotation-card">
+                  <div className="quotation-card" data-aos="fade-up" data-aos-delay="200">
                     <h4>Hosting & Domain</h4>
                     <ul>
                       <li>1 Year Domain Registration</li>
@@ -140,7 +146,7 @@ const Portfolio: React.FC = () => {
                   </div>
 
                   {/* Payment Terms */}
-                  <div className="quotation-card">
+                  <div className="quotation-card" data-aos="fade-up" data-aos-delay="250">
                     <h4>Payment Terms</h4>
                     <div className="payment-terms">
                       <div className="term-row">
@@ -161,7 +167,7 @@ const Portfolio: React.FC = () => {
                   </div>
 
                   {/* Client Responsibilities */}
-                  <div className="quotation-card">
+                  <div className="quotation-card" data-aos="fade-up" data-aos-delay="300">
                     <h4>Client Responsibilities</h4>
                     <div className="responsibility-group">
                       <h5>Content & Assets</h5>
@@ -189,7 +195,7 @@ const Portfolio: React.FC = () => {
           {activeTab === 'branding' && (
             <div>
               {/* Filter Buttons */}
-              <div className="filter-buttons">
+              <div className="filter-buttons" data-aos="fade-up">
                 {categories.map((cat) => (
                   <button
                     key={cat.value}
@@ -203,14 +209,22 @@ const Portfolio: React.FC = () => {
 
               <div className="portfolio-grid">
                 {loading ? (
-                  <p className="text-center col-span-full py-20">Loading your latest work...</p>
+                  <>
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div key={i} className="portfolio-skeleton" aria-hidden>
+                        <div className="portfolio-skeleton-image" />
+                        <div className="portfolio-skeleton-line" />
+                        <div className="portfolio-skeleton-line short" />
+                      </div>
+                    ))}
+                  </>
                 ) : filteredProjects.length === 0 ? (
                   <p className="text-center col-span-full py-20">
                     {projects.length === 0 ? "No projects yet. Add some in Sanity!" : "No projects found in this category."}
                   </p>
                 ) : (
-                  filteredProjects.map((item) => (
-                    <div key={item._id} className="portfolio-item">
+                  filteredProjects.map((item, i) => (
+                    <div key={item._id} className="portfolio-item" data-aos="fade-up" data-aos-delay={100 + i * 50}>
                       <div className="portfolio-image">
                         <img
                           src={item.mainImage ? urlFor(item.mainImage).width(800).height(600).url() : 'https://via.placeholder.com/800x600?text=No+Image'}
@@ -247,8 +261,8 @@ const Portfolio: React.FC = () => {
           {/* Writing Tab */}
           {activeTab === 'writing' && (
             <div className="services-grid">
-              {pricingData.writing.map((service) => (
-                <div key={service.id} className="service-card">
+              {pricingData.writing.map((service, i) => (
+                <div key={service.id} className="service-card" data-aos="fade-up" data-aos-delay={150 + i * 80}>
                   <h3>{service.title}</h3>
                   <p className="service-desc">{service.description}</p>
                   <div className="service-price">
@@ -269,41 +283,18 @@ const Portfolio: React.FC = () => {
         </div>
       </div>
 
-      {/* Image Modal */}
-      {selectedImage && (
+      {/* Image Modal - rendered via portal to body so it's always centered in viewport */}
+      {selectedImage && createPortal(
         <div className="modal-overlay" onClick={() => setSelectedImage(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setSelectedImage(null)}>×</button>
             <img src={selectedImage} alt="Full size view" />
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       <style>{`
-        .tabs {
-          display: flex;
-          justify-content: center;
-          gap: 1rem;
-          margin-bottom: 3rem;
-        }
-        .tab-btn {
-          padding: 0.8rem 2rem;
-          border-radius: var(--radius-full);
-          background: rgba(255, 255, 255, 0.05);
-          color: var(--color-text);
-          font-weight: 600;
-          transition: all 0.3s ease;
-          border: 1px solid transparent;
-        }
-        .tab-btn:hover {
-          background: rgba(255, 255, 255, 0.1);
-        }
-        .tab-btn.active {
-          background: var(--color-primary);
-          color: white;
-          box-shadow: 0 4px 20px rgba(100, 108, 255, 0.3);
-        }
-
         /* Filter Buttons */
         .filter-buttons {
           display: flex;
@@ -316,26 +307,33 @@ const Portfolio: React.FC = () => {
           padding: 0.75rem 1.5rem;
           border-radius: 9999px;
           font-weight: 500;
-          transition: all 0.3s ease;
-          border: none;
+          transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease, outline-offset 0.2s ease;
+          border: 1px solid var(--color-border);
           cursor: pointer;
-          background: rgba(255, 255, 255, 0.1);
-          color: rgba(255, 255, 255, 0.7);
+          background: var(--color-bg-outer);
+          color: var(--color-text-muted);
         }
         .filter-btn:hover {
-          background: rgba(255, 255, 255, 0.2);
-          color: white;
+          background: var(--color-border);
+          color: var(--color-text);
+          transform: scale(1.05);
+          box-shadow: 0 4px 12px var(--color-shadow);
+        }
+        .filter-btn:focus-visible {
+          outline: 2px solid var(--color-cyan);
+          outline-offset: 2px;
         }
         .filter-btn.active {
-          background: var(--color-primary);
-          color: white;
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          background: var(--color-cyan);
+          color: #0a0a0a;
+          border-color: var(--color-cyan);
+          box-shadow: 0 4px 12px var(--color-shadow);
         }
 
         /* Pricing Cards */
         .pricing-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
           gap: 2rem;
         }
         .pricing-card {
@@ -343,12 +341,19 @@ const Portfolio: React.FC = () => {
           padding: 2.5rem;
           border-radius: var(--radius-lg);
           text-align: center;
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          transition: transform 0.3s ease;
+          border: 1px solid var(--color-border);
+          box-shadow: var(--shadow-card);
+          transition: transform 0.3s ease, box-shadow 0.3s ease, outline-offset 0.2s ease;
         }
         .pricing-card:hover {
-          transform: translateY(-10px);
-          border-color: var(--color-primary);
+          transform: translateY(-6px) scale(1.02);
+          border-color: var(--color-cyan);
+          box-shadow: var(--shadow-card), 0 12px 24px var(--color-shadow);
+        }
+        .pricing-card:focus-within {
+          outline: 2px solid var(--color-cyan);
+          outline-offset: 2px;
+          border-radius: var(--radius-lg);
         }
         .plan-title {
           font-size: 1.5rem;
@@ -356,13 +361,13 @@ const Portfolio: React.FC = () => {
         }
         .plan-price-label {
           font-size: 0.9rem;
-          opacity: 0.7;
+          color: var(--color-text-muted);
           margin-bottom: 0.5rem;
         }
         .plan-price {
           font-size: 2.5rem;
           font-weight: 700;
-          color: var(--color-primary);
+          color: var(--color-cyan);
           margin-bottom: 2rem;
           font-family: var(--font-display);
         }
@@ -373,14 +378,14 @@ const Portfolio: React.FC = () => {
         }
         .plan-features li {
           padding: 0.8rem 0;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          color: rgba(255, 255, 255, 0.8);
+          border-bottom: 1px solid var(--color-border);
+          color: var(--color-text-muted);
           display: flex;
           align-items: center;
         }
         .plan-features li::before {
           content: '✓';
-          color: var(--color-accent);
+          color: var(--color-cyan);
           margin-right: 0.8rem;
           font-weight: bold;
         }
@@ -397,22 +402,35 @@ const Portfolio: React.FC = () => {
           margin-bottom: 2rem;
           color: var(--color-text);
         }
+        #portfolio.section {
+          border-top: 1px solid var(--color-border);
+        }
         .quotation-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
           gap: 2rem;
         }
         .quotation-card {
           background: var(--color-surface);
           padding: 2rem;
           border-radius: var(--radius-lg);
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          border: 1px solid var(--color-border);
+          box-shadow: var(--shadow-card);
+          transition: transform 0.3s ease, box-shadow 0.3s ease, outline-offset 0.2s ease;
+        }
+        .quotation-card:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-card), 0 8px 20px var(--color-shadow);
+        }
+        .quotation-card:focus-within {
+          outline: 2px solid var(--color-cyan);
+          outline-offset: 2px;
         }
         .quotation-card h4 {
           color: var(--color-primary);
           font-size: 1.2rem;
           margin-bottom: 1.5rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          border-bottom: 1px solid var(--color-border);
           padding-bottom: 0.5rem;
         }
         .quotation-card ul {
@@ -421,13 +439,13 @@ const Portfolio: React.FC = () => {
         }
         .quotation-card li {
           margin-bottom: 0.8rem;
-          color: rgba(255, 255, 255, 0.8);
+          color: var(--color-text-muted);
           position: relative;
           padding-left: 1.2rem;
         }
         .quotation-card li::before {
           content: '•';
-          color: var(--color-accent);
+          color: var(--color-cyan);
           position: absolute;
           left: 0;
         }
@@ -440,25 +458,26 @@ const Portfolio: React.FC = () => {
           display: flex;
           justify-content: space-between;
           margin-bottom: 0.8rem;
-          border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+          border-bottom: 1px dashed var(--color-border);
           padding-bottom: 0.2rem;
         }
         .term-row span {
-          color: rgba(255, 255, 255, 0.9);
+          color: var(--color-text);
         }
         .term-row .highlight {
-          color: var(--color-accent);
+          color: var(--color-cyan);
           font-weight: bold;
         }
         .payment-note {
           font-size: 0.9rem;
-          color: rgba(255, 255, 255, 0.6);
+          color: var(--color-text-muted);
           margin-bottom: 0.5rem;
         }
         .payment-disclaimer {
           font-size: 0.8rem;
-          color: rgba(255, 255, 255, 0.4);
+          color: var(--color-text-muted);
           font-style: italic;
+          opacity: 0.8;
         }
 
         /* Client Responsibilities specific */
@@ -466,7 +485,7 @@ const Portfolio: React.FC = () => {
           margin-bottom: 1.5rem;
         }
         .responsibility-group h5 {
-          color: white;
+          color: var(--color-text);
           font-size: 1rem;
           margin-bottom: 0.8rem;
         }
@@ -489,7 +508,7 @@ const Portfolio: React.FC = () => {
         }
         .portfolio-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
           gap: 2rem;
         }
         .portfolio-item {
@@ -497,6 +516,16 @@ const Portfolio: React.FC = () => {
           border-radius: var(--radius-md);
           overflow: hidden;
           cursor: pointer;
+          box-shadow: var(--shadow-card);
+          transition: transform 0.3s ease, box-shadow 0.3s ease, outline-offset 0.2s ease;
+        }
+        .portfolio-item:hover {
+          box-shadow: var(--shadow-card), 0 12px 28px var(--color-shadow);
+        }
+        .portfolio-item:focus-within {
+          outline: 2px solid var(--color-cyan);
+          outline-offset: 2px;
+          border-radius: var(--radius-md);
         }
         .portfolio-image {
           position: relative;
@@ -515,7 +544,7 @@ const Portfolio: React.FC = () => {
         .portfolio-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4));
+          background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.3));
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
@@ -528,9 +557,11 @@ const Portfolio: React.FC = () => {
         }
         .portfolio-overlay h3 {
           margin-bottom: 1rem;
+          color: #fff;
           transform: translateY(10px);
           transition: transform 0.3s ease;
         }
+        .portfolio-overlay p { color: rgba(255,255,255,0.8); }
         .portfolio-item:hover .portfolio-overlay h3 {
           transform: translateY(0);
         }
@@ -544,11 +575,12 @@ const Portfolio: React.FC = () => {
           transform: translateY(0);
         }
         .btn-view {
-          background: rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.25);
+          color: #fff;
           backdrop-filter: blur(5px);
         }
         .btn-view:hover {
-          background: rgba(255, 255, 255, 0.3);
+          background: rgba(255, 255, 255, 0.35);
         }
         .mt-sm { margin-top: 1rem; }
 
@@ -591,7 +623,11 @@ const Portfolio: React.FC = () => {
         }
         .modal-close:hover {
           transform: rotate(90deg);
-          color: var(--color-primary);
+          color: var(--color-cyan);
+        }
+        .modal-close:focus-visible {
+          outline: 2px solid var(--color-cyan);
+          outline-offset: 2px;
         }
         @keyframes fadeIn {
           from { opacity: 0; }
@@ -601,33 +637,80 @@ const Portfolio: React.FC = () => {
         /* Services Grid (Writing) */
         .services-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
           gap: 2rem;
         }
         .service-card {
           background: var(--color-surface);
           padding: 2rem;
           border-radius: var(--radius-md);
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          border: 1px solid var(--color-border);
+          box-shadow: var(--shadow-card);
           display: flex;
           flex-direction: column;
           align-items: flex-start;
+          transition: transform 0.3s ease, box-shadow 0.3s ease, outline-offset 0.2s ease;
         }
-        .service-desc {
-          color: rgba(255, 255, 255, 0.7);
+        .service-card:hover {
+          transform: translateY(-4px) scale(1.02);
+          box-shadow: var(--shadow-card), 0 12px 28px var(--color-shadow);
+        }
+        .service-card:focus-within {
+          outline: 2px solid var(--color-cyan);
+          outline-offset: 2px;
+        }
+        .service-card .service-desc {
+          color: var(--color-text-muted);
           margin-bottom: 1.5rem;
           flex-grow: 1;
         }
         .service-price {
           font-size: 1.5rem;
           font-weight: 700;
-          color: var(--color-accent);
+          color: var(--color-cyan);
           margin-bottom: 1.5rem;
         }
         .unit {
           font-size: 0.9rem;
-          color: rgba(255, 255, 255, 0.5);
+          color: var(--color-text-muted);
           font-weight: 400;
+        }
+
+        /* Portfolio loading skeleton */
+        .portfolio-skeleton {
+          border-radius: var(--radius-md);
+          overflow: hidden;
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+        }
+        .portfolio-skeleton-image {
+          aspect-ratio: 4/3;
+          background: linear-gradient(90deg, var(--color-border) 25%, rgba(0,0,0,0.06) 50%, var(--color-border) 75%);
+          background-size: 200% 100%;
+          animation: portfolio-skeleton-shimmer 1.2s ease-in-out infinite;
+        }
+        .portfolio-skeleton-line {
+          height: 14px;
+          margin: 1rem 1rem 0;
+          border-radius: 4px;
+          background: linear-gradient(90deg, var(--color-border) 25%, rgba(0,0,0,0.06) 50%, var(--color-border) 75%);
+          background-size: 200% 100%;
+          animation: portfolio-skeleton-shimmer 1.2s ease-in-out infinite;
+        }
+        .portfolio-skeleton-line.short {
+          width: 50%;
+          margin-bottom: 1rem;
+        }
+        @keyframes portfolio-skeleton-shimmer {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .portfolio-skeleton-image,
+          .portfolio-skeleton-line {
+            animation: none;
+            background: var(--color-border);
+          }
         }
       `}</style>
     </section>
