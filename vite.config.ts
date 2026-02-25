@@ -4,4 +4,12 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    proxy: {
+      '/.netlify/functions': {
+        target: 'https://bendypixels.netlify.app',
+        changeOrigin: true,
+      },
+    },
+  },
 })

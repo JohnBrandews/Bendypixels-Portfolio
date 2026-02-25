@@ -1,5 +1,5 @@
-import React from 'react';
-import { SplitText } from '@cyriacbr/react-split-text';
+import React, { type PropsWithChildren } from 'react';
+import { SplitText, type WordWrapperProp, type SplitTextProps } from '@cyriacbr/react-split-text';
 import TextType from './TextType';
 
 const stats = [
@@ -10,13 +10,13 @@ const stats = [
 
 const STAGGER_MS = 50;
 
+// Cast SplitText to include children as the library's types are legacy for React 18+
+const SplitTextComp = SplitText as React.ComponentType<PropsWithChildren<SplitTextProps>>;
+
 function StaggerWord({
   children,
   countIndex,
-}: {
-  children: React.ReactNode;
-  countIndex: number;
-}) {
+}: PropsWithChildren<WordWrapperProp>) {
   return (
     <span
       className="hero-split-word"
@@ -49,18 +49,18 @@ const Hero: React.FC = () => {
             />
           </h1>
           <p className="hero-subhead" data-aos="fade-up" data-aos-delay="200">
-            <SplitText WordWrapper={StaggerWord}>
+            <SplitTextComp WordWrapper={StaggerWord}>
               We craft brands and products that stand out. Let's build something memorable—websites, branding, and experiences that connect with your audience.
-            </SplitText>
+            </SplitTextComp>
           </p>
           <div className="hero-actions" data-aos="fade-up" data-aos-delay="300">
             <a href="#portfolio" className="btn btn-hero-primary">
               Explore More
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
             </a>
             <a href="#portfolio" className="hero-demo">
               <span className="hero-demo-circle">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
               </span>
               <span className="hero-demo-label">Watch Demo</span>
             </a>
@@ -103,7 +103,7 @@ const Hero: React.FC = () => {
       <div className="hero-scroll-hint" aria-hidden>
         <span className="hero-scroll-hint-text">Scroll</span>
         <span className="hero-scroll-hint-chevron">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12l7 7 7-7" /></svg>
         </span>
       </div>
       <style>{`
