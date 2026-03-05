@@ -13,8 +13,33 @@ interface Project {
   mainImage: any;
 }
 
+interface Demo {
+  id: string;
+  title: string;
+  price: string;
+  url: string;
+  image: string;
+}
+
+interface PricingData {
+  websites: Array<{
+    id: string;
+    title: string;
+    price: string;
+    features: string[];
+  }>;
+  writing: Array<{
+    id: string;
+    title: string;
+    price: string;
+    unit: string;
+    description: string;
+  }>;
+  demos?: Demo[];
+}
+
 const Portfolio: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'websites' | 'branding' | 'writing'>('websites');
+  const [activeTab, setActiveTab] = useState<'websites' | 'branding' | 'writing' | 'demo'>('websites');
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('All');
@@ -276,6 +301,38 @@ const Portfolio: React.FC = () => {
                   >
                     Order Now
                   </a>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Demo Tab */}
+          {activeTab === 'demo' && (
+            <div className="demo-grid">
+              {(pricingData as PricingData).demos?.map((demo, i) => (
+                <div key={demo.id} className="demo-card" data-aos="fade-up" data-aos-delay={150 + i * 80}>
+                  <div className="demo-image">
+                    <img src={demo.image} alt={demo.title} />
+                  </div>
+                  <div className="demo-content">
+                    <div className="demo-header">
+                      <h3 className="demo-title">{demo.title}</h3>
+                      <div className="demo-price">KSH {demo.price}</div>
+                    </div>
+                    <div className="demo-actions">
+                      <a href={demo.url} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-demo">
+                        Live Demo
+                      </a>
+                      <a
+                        href={getWhatsappLink(`I'd like to order a website similar to the ${demo.title} demo.`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-demo-order"
+                      >
+                        Order
+                      </a>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -705,6 +762,89 @@ const Portfolio: React.FC = () => {
           0% { background-position: 200% 0; }
           100% { background-position: -200% 0; }
         }
+
+        /* Demo Grid */
+        .demo-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+          gap: 2rem;
+        }
+        .demo-card {
+          background: var(--color-surface);
+          border-radius: var(--radius-lg);
+          overflow: hidden;
+          border: 1px solid var(--color-border);
+          box-shadow: var(--shadow-card);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .demo-card:hover {
+          transform: translateY(-6px);
+          box-shadow: var(--shadow-card), 0 12px 24px var(--color-shadow);
+        }
+        .demo-image {
+          aspect-ratio: 16/9;
+          overflow: hidden;
+        }
+        .demo-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
+        }
+        .demo-card:hover .demo-image img {
+          transform: scale(1.05);
+        }
+        .demo-content {
+          padding: 1.5rem;
+        }
+        .demo-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1.5rem;
+          gap: 1rem;
+        }
+        .demo-title {
+          font-size: 1.25rem;
+          margin: 0;
+          color: var(--color-text);
+          flex: 1;
+        }
+        .demo-price {
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: var(--color-cyan);
+          white-space: nowrap;
+        }
+        .demo-actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+        }
+        .btn-demo {
+          font-size: 0.9rem;
+          padding: 0.6rem 1rem;
+        }
+        .btn-demo-order {
+          background: var(--color-cyan);
+          color: #0a0a0a;
+          font-weight: 600;
+          font-size: 0.9rem;
+          padding: 0.6rem 1rem;
+          text-align: center;
+          border-radius: var(--radius-sm);
+          transition: opacity 0.2s ease;
+        }
+        .btn-demo-order:hover {
+          opacity: 0.9;
+        }
+
+        @media (max-width: 480px) {
+          .demo-actions {
+            grid-template-columns: 1fr;
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .portfolio-skeleton-image,
           .portfolio-skeleton-line {

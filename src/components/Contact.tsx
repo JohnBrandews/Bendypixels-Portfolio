@@ -22,9 +22,6 @@ const Contact: React.FC = () => {
     return () => clearTimeout(t);
   }, [typedText]);
 
-  useEffect(() => {
-    setTypedText('');
-  }, []);
 
   useEffect(() => {
     if (showForm) {

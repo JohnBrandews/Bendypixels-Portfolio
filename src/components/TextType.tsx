@@ -54,6 +54,8 @@ export default function TextType({
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const blinkRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  const phrasesKey = phrases.join(',');
+
   // Typing effect: single phrase, type once (loop=false) or multi-phrase cycle
   useEffect(() => {
     if (phrases.length === 0) return;
@@ -61,7 +63,6 @@ export default function TextType({
     charIndexRef.current = 0;
     phraseIndexRef.current = 0;
     isDeletingRef.current = false;
-    setDisplayText('');
 
     const speed = () =>
       variableSpeedEnabled
@@ -109,7 +110,7 @@ export default function TextType({
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [phrases.join(','), typingSpeed, pauseDuration, deletingSpeed, variableSpeedEnabled, variableSpeedMin, variableSpeedMax, loop]);
+  }, [phrasesKey, typingSpeed, pauseDuration, deletingSpeed, variableSpeedEnabled, variableSpeedMin, variableSpeedMax, loop, phrases]);
 
   useEffect(() => {
     if (!showCursor) return;

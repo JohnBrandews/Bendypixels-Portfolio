@@ -59,5 +59,35 @@
             "unit": "flat rate",
             "description": "Hassle-free KRA tax return filing services."
         }
+    ],
+    "demos": [
+        {
+            "id": "mynunny",
+            "title": "Nanny Agency Website",
+            "price": "35,000",
+            "url": "https://mynunny-connect.vercel.app/",
+            "image": "/demos/mynunny.png"
+        },
+        {
+            "id": "vertex",
+            "title": "Corporate Website",
+            "price": "30,000",
+            "url": "https://vertexglobalcommodities.netlify.app/",
+            "image": "/demos/corporate.png"
+        },
+        {
+            "id": "nightpulse",
+            "title": "Nightlife Platform",
+            "price": "50,000",
+            "url": "https://nightpulse-nine.vercel.app/",
+            "image": "/demos/nightpulse.png"
+        },
+        {
+            "id": "inspirahaven",
+            "title": "Health & Wellness",
+            "price": "25,000",
+            "url": "https://www.inspirahaven.co.ke/",
+            "image": "/demos/health_wellness.png"
+        }
     ]
 }

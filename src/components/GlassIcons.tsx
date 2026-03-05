@@ -25,7 +25,15 @@ const IconEdit = () => (
   </svg>
 );
 
-export type ServiceTab = 'websites' | 'branding' | 'writing';
+const IconMonitor = () => (
+  <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+    <line x1="8" y1="21" x2="16" y2="21" />
+    <line x1="12" y1="17" x2="12" y2="21" />
+  </svg>
+);
+
+export type ServiceTab = 'websites' | 'branding' | 'writing' | 'demo';
 
 export interface GlassIconItem {
   value: ServiceTab;
@@ -38,6 +46,7 @@ const defaultItems: GlassIconItem[] = [
   { value: 'websites', label: 'Websites', icon: <IconGlobe />, color: 'blue' },
   { value: 'branding', label: 'Branding', icon: <IconPalette />, color: 'purple' },
   { value: 'writing', label: 'Writing', icon: <IconEdit />, color: 'orange' },
+  { value: 'demo', label: 'Demo', icon: <IconMonitor />, color: 'green' },
 ];
 
 type GlassIconsProps = {
