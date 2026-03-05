@@ -5,6 +5,7 @@ const brands = [
   { src: '/brand1.jpeg', alt: 'Vertex Global Commodities', size: 'large' as const },
   { src: '/logo.jpeg', alt: 'Bendy Pixel', size: 'large' as const },
   { src: '/brand3.png', alt: 'Partner' },
+  { src: '/demos/harris apex.jpeg', alt: 'Harris Apex' },
 ];
 
 const Clients: React.FC = () => {

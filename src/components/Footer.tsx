@@ -71,7 +71,7 @@ const Footer: React.FC = () => {
               {copied ? 'Copied' : 'Copy'}
             </button>
           </span>
-          <a href={CV_LINK} className="footer-cv" target="_blank" rel="noopener noreferrer">Download CV</a>
+          <a href={CV_LINK} className="footer-cv" download="John_Brandews_CV.pdf">Download CV</a>
           <div className="footer-social">
             <a href="https://www.linkedin.com/in/john-brandews-8657562bb" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">LinkedIn</a>
             <span className="footer-sep">/</span>
