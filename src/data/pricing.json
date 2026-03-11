@@ -88,6 +88,13 @@
             "price": "25,000",
             "url": "https://www.inspirahaven.co.ke/",
             "image": "/demos/health_wellness.png"
+        },
+        {
+            "id": "clubliquor",
+            "title": "Club Liquor POS",
+            "price": "45,000",
+            "url": "https://club-liquor-pos-system.vercel.app/",
+            "image": "/demos/club_liquor_pos.png"
         }
     ]
 }
