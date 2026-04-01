@@ -83,6 +83,13 @@
             "image": "/demos/nightpulse.png"
         },
         {
+            "id": "farmman",
+            "title": "Agri Insurance System",
+            "price": "45,000",
+            "url": "https://agri-insurance-system.vercel.app/",
+            "image": "/demos/farmman.png"
+        },
+        {
             "id": "inspirahaven",
             "title": "Health & Wellness",
             "price": "25,000",
