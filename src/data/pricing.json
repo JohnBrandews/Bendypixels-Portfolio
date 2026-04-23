@@ -90,6 +90,13 @@
             "image": "/demos/farmman.png"
         },
         {
+            "id": "smartseason",
+            "title": "SmartSeason",
+            "price": "45,000",
+            "url": "https://smart-field.vercel.app/",
+            "image": "/imagesmart.png"
+        },
+        {
             "id": "inspirahaven",
             "title": "Health & Wellness",
             "price": "25,000",
